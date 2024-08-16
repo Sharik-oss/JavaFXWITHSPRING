@@ -1,20 +1,19 @@
-package controllers;
+package model;
+
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-
-@Entity
-@Table(name = "product")
-public class Product {
+public class Hookah {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+
     @Getter
     @Setter
-    @Column(name = "name", nullable = false)
-    private String name;
+    @Column(name = "flavor", nullable = false)
+    private String flavor;
 
 
     @Getter
@@ -22,17 +21,17 @@ public class Product {
     @Column(name = "price", nullable = false)
     private Double price;
 
-
     @Getter
     @Setter
     @ManyToOne
     @JoinColumn(name = "playstation_id", nullable = false)
-    private Playstation playStation;
+    private Device device;
 
-    public Product(String name, Double price, Playstation playStation) {
-        this.name = name;
+    // Constructors, getters, and setters
+
+    public Hookah(String flavor, Double price, Device device) {
+        this.flavor = flavor;
         this.price = price;
-        this.playStation = playStation;
+        this.device = device;
     }
-
 }

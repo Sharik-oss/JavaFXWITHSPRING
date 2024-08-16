@@ -1,4 +1,4 @@
-package controllers;
+package model;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -7,8 +7,8 @@ import org.springframework.data.annotation.Id;
 import java.util.List;
 
 @Entity
-@Table(name = "playstation")
-public class Playstation {
+@Table(name = "device")
+public class Device {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -33,10 +33,7 @@ public class Playstation {
     @Column(name = "duration_3_hours")
     private Double duration3Hours;
 
-    @Setter
-    @Getter
-    @Column(name = "vip")
-    private Boolean vip;
+
 
     @Setter
     @Getter
@@ -49,14 +46,16 @@ public class Playstation {
     private List<Hookah> hookahs;
 
 
-    public void PlayStation(String name, Double duration30Min, Double duration1Hour, Double duration3Hours, Boolean vip, List<Product> products, List<Hookah> hookahs) {
+    public Device(String name, Double duration30Min, Double duration1Hour, Double duration3Hours, List<Product> products, List<Hookah> hookahs) {
         this.name = name;
         this.duration30Min = duration30Min;
         this.duration1Hour = duration1Hour;
         this.duration3Hours = duration3Hours;
-        this.vip = vip;
         this.products = products;
         this.hookahs = hookahs;
 
     }
+
+
+
 }
