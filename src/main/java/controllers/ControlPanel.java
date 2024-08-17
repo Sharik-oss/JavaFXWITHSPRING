@@ -10,9 +10,10 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import model.Device;
+import model.Hookah;
+import model.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
@@ -21,7 +22,11 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.query.FluentQuery;
 import org.springframework.stereotype.Controller;
 import repo.DeviceRepository;
+import repo.HookahRepository;
+import repo.ProductRepository;
 import services.DeviceServices;
+import services.HookahServices;
+import services.ProductServices;
 
 import java.awt.event.ActionEvent;
 import java.util.List;
@@ -31,8 +36,7 @@ import java.util.function.Function;
 @Controller
 @RequiredArgsConstructor
 public class ControlPanel  {
-    private Double fontSize = 25.0;
-    private DeviceRepository deviceRepository = new DeviceRepository() {
+    private final DeviceRepository deviceRepository = new DeviceRepository() {
         @Override
         public void deleteDeviceById(Long id) {
 
@@ -193,7 +197,7 @@ public class ControlPanel  {
             return null;
         }
     };
-    private DeviceServices deviceServices = new DeviceServices(deviceRepository);
+    private final DeviceServices deviceServices = new DeviceServices(deviceRepository);
     Stage stage = new Stage();
 
 
@@ -229,6 +233,7 @@ public class ControlPanel  {
         Scene addDeviceScene = new Scene(gridPane);
 
         Label deviceName = new Label("Device name: ");
+        double fontSize = 25.0;
         deviceName.setFont(Font.font(fontSize));
         TextField name = new TextField();
 
@@ -246,7 +251,9 @@ public class ControlPanel  {
         TextField duration3 = new TextField();
 
         Button addButton = new Button("Add");
-
+        addButton.setFont(Font.font(fontSize));
+        addButton.setMinWidth(200);
+        addButton.setMinHeight(50);
 
         gridPane.add(deviceName, 0, 0);
         gridPane.add(name, 1, 0);
@@ -261,7 +268,22 @@ public class ControlPanel  {
         gridPane.add(duration3, 1, 3);
 
         gridPane.add(addButton, 0, 4);
+
+        addButton.setOnAction(ActionEvent -> getProperties(name.getText(), Double.parseDouble(duration30.getText()), Double.parseDouble(duration1.getText()), Double.parseDouble(duration3.getText())));
+
         stage.setScene(addDeviceScene);
+    }
+
+
+    private void getProperties(String name, Double min30, Double hour1, Double hour3 ){
+        Device newDevice = new Device();
+    
+        newDevice.setName(name);
+        newDevice.setDuration30Min(min30);
+        newDevice.setDuration1Hour(hour1);
+        newDevice.setDuration3Hours(hour3);
+        deviceServices.addDevice(newDevice);
+        System.out.println(deviceServices.findAllDevice());
     }
 
 }

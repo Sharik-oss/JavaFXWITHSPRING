@@ -1,14 +1,15 @@
 package model;
+
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.data.annotation.Id;
 
 import java.util.List;
 
 @Entity
 @Table(name = "device")
 public class Device {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -28,34 +29,29 @@ public class Device {
     @Column(name = "duration_1_hour")
     private Double duration1Hour;
 
-    @Setter
     @Getter
+    @Setter
     @Column(name = "duration_3_hours")
     private Double duration3Hours;
 
-
-
-    @Setter
     @Getter
-    @OneToMany(mappedBy = "playStation", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @Setter
+    @OneToMany(mappedBy = "device", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Product> products;
 
     @Getter
     @Setter
-    @OneToMany(mappedBy = "playStation", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "device", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Hookah> hookahs;
 
-
-    public Device(String name, Double duration30Min, Double duration1Hour, Double duration3Hours, List<Product> products, List<Hookah> hookahs) {
-        this.name = name;
-        this.duration30Min = duration30Min;
-        this.duration1Hour = duration1Hour;
-        this.duration3Hours = duration3Hours;
-        this.products = products;
-        this.hookahs = hookahs;
-
+    @Override
+    public String toString() {
+        return "Device{" +
+                "name='" + name + '\'' +
+                ", duration30Min=" + duration30Min +
+                ", duration1Hour=" + duration1Hour +
+                ", duration3Hours=" + duration3Hours +
+                // Avoid directly printing products and hookahs here if lazy-loaded
+                '}';
     }
-
-
-
 }

@@ -1,5 +1,6 @@
 package services;
 
+import lombok.RequiredArgsConstructor;
 import model.Device;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,24 +14,29 @@ public class DeviceServices {
     private final DeviceRepository deviceRepository;
 
     @Autowired
-    public DeviceServices(DeviceRepository playstationRepository){
-        this.deviceRepository = playstationRepository;
+    public DeviceServices(DeviceRepository deviceRepository){
+        this.deviceRepository = deviceRepository;
     }
 
-
-    public Device addPlaystation(Device device){
-        return deviceRepository.save(device);
+    @Transactional
+    public void addDevice(Device device){
+        try {
+            deviceRepository.save(device);
+            System.out.println("Device saved successfully");
+        } catch (Exception e) {
+            System.err.println("Error saving device: " + e.getMessage());
+        }
     }
 
-    public List<Device> findAllPlaystation(){
+    public List<Device> findAllDevice(){
         return deviceRepository.findAll();
     }
 
-    public Device updatePlaystation(Device device){
+    public Device updateDevice(Device device){
         return deviceRepository.save(device);
     }
 
-    public Device findPlaystationById(Long id){
+    public Device findDeviceById(Long id){
         return deviceRepository.findDeviceById(id);
     }
 
