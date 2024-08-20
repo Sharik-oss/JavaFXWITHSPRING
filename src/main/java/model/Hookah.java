@@ -24,7 +24,7 @@ public class Hookah {
     @Getter
     @Setter
     @ManyToOne
-    @JoinColumn(name = "playstation_id", nullable = false)
+    @JoinColumn(name = "device_id", nullable = false)
     private Device device;
 
     // Constructors, getters, and setters

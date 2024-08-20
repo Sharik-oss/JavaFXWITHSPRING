@@ -11,6 +11,7 @@ import java.util.List;
 public class Device {
 
     @Id
+    @Getter
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -36,12 +37,12 @@ public class Device {
 
     @Getter
     @Setter
-    @OneToMany(mappedBy = "device", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "device_id", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Product> products;
 
     @Getter
     @Setter
-    @OneToMany(mappedBy = "device", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "device_id", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Hookah> hookahs;
 
     @Override

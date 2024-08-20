@@ -15,6 +15,7 @@ import model.Device;
 import model.Hookah;
 import model.Product;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -29,6 +30,7 @@ import services.HookahServices;
 import services.ProductServices;
 
 import java.awt.event.ActionEvent;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
@@ -64,7 +66,7 @@ public class ControlPanel  {
 
         @Override
         public <S extends Device> List<S> saveAllAndFlush(Iterable<S> entities) {
-            return List.of();
+            return null;
         }
 
         @Override
@@ -99,27 +101,27 @@ public class ControlPanel  {
 
         @Override
         public <S extends Device> List<S> findAll(Example<S> example) {
-            return List.of();
+            return null;
         }
 
         @Override
         public <S extends Device> List<S> findAll(Example<S> example, Sort sort) {
-            return List.of();
+            return null;
         }
 
         @Override
         public <S extends Device> List<S> saveAll(Iterable<S> entities) {
-            return List.of();
+            return null;
         }
 
         @Override
         public List<Device> findAll() {
-            return List.of();
+            return null;
         }
 
         @Override
         public List<Device> findAllById(Iterable<Long> longs) {
-            return List.of();
+            return null;
         }
 
         @Override
@@ -164,7 +166,7 @@ public class ControlPanel  {
 
         @Override
         public List<Device> findAll(Sort sort) {
-            return List.of();
+            return null;
         }
 
         @Override
@@ -197,15 +199,17 @@ public class ControlPanel  {
             return null;
         }
     };
-    private final DeviceServices deviceServices = new DeviceServices(deviceRepository);
-    Stage stage = new Stage();
 
+    private final Stage stage = new Stage();
+    private final Device device = new Device();
 
     public void openControlPanel() {
         VBox vBox = new VBox();
 
         vBox.setAlignment(Pos.CENTER);
         Scene scene = new Scene(vBox);
+
+
         // Check if the table is empty
         boolean isEmpty = !deviceRepository.existsById(1L); // Check if a device with ID 1 exists
 
@@ -219,17 +223,17 @@ public class ControlPanel  {
         }
 
         stage.setWidth(800);
-        stage.setHeight(800);
+        stage.setHeight(500);
         stage.setScene(scene);
         stage.setTitle("Control panel");
         stage.setResizable(false);
         stage.show();
     }
 
-
-    public void addDevice(){
+    public void addDevice() {
+        HookahController hookahController = new HookahController();
         GridPane gridPane = new GridPane();
-        gridPane.paddingProperty().set(Insets.EMPTY);
+        gridPane.setVgap(10);
         Scene addDeviceScene = new Scene(gridPane);
 
         Label deviceName = new Label("Device name: ");
@@ -247,8 +251,13 @@ public class ControlPanel  {
 
         Label duration3Hours = new Label("Price for 3 hours: ");
         duration3Hours.setFont(Font.font(fontSize));
-
         TextField duration3 = new TextField();
+
+        Button hookahButton = new Button("Add hookah");
+        hookahButton.setOnAction(ActionEvent -> hookahController.openHookahPanel(device.getId()));
+        hookahButton.setFont(Font.font(fontSize));
+        hookahButton.setMinWidth(200);
+        hookahButton.setMinHeight(50);
 
         Button addButton = new Button("Add");
         addButton.setFont(Font.font(fontSize));
@@ -267,23 +276,33 @@ public class ControlPanel  {
         gridPane.add(duration3Hours, 0, 3);
         gridPane.add(duration3, 1, 3);
 
-        gridPane.add(addButton, 0, 4);
+        gridPane.add(hookahButton, 0, 4);
+        gridPane.add(addButton, 0, 6);
 
         addButton.setOnAction(ActionEvent -> getProperties(name.getText(), Double.parseDouble(duration30.getText()), Double.parseDouble(duration1.getText()), Double.parseDouble(duration3.getText())));
 
         stage.setScene(addDeviceScene);
     }
 
-
-    private void getProperties(String name, Double min30, Double hour1, Double hour3 ){
+    private void getProperties(String name, Double min30, Double hour1, Double hour3) {
+        DeviceServices deviceServices = new DeviceServices(deviceRepository);
         Device newDevice = new Device();
-    
+
         newDevice.setName(name);
         newDevice.setDuration30Min(min30);
         newDevice.setDuration1Hour(hour1);
         newDevice.setDuration3Hours(hour3);
+        List<Hookah> hookahs = new ArrayList<>();
+        hookahs.add(new Hookah("test", 20.0, newDevice));
+        newDevice.setHookahs(hookahs);
+
+        List<Product> products = new ArrayList<>();
+        products.add(new Product("test", 20.0, newDevice));
+        newDevice.setProducts(products);
         deviceServices.addDevice(newDevice);
+        System.out.println(name + " " + min30 + " " + hour1 + " " + hour3);
+        System.out.println("New Device " + newDevice);
         System.out.println(deviceServices.findAllDevice());
     }
-
 }
+
