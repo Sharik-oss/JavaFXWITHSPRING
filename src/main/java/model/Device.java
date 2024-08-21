@@ -11,39 +11,59 @@ import java.util.List;
 public class Device {
 
     @Id
-    @Getter
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-
-    @Getter
-    @Setter
-    @Column(name = "name", nullable = false)
     private String name;
-
-    @Getter
-    @Setter
-    @Column(name = "duration_30_min")
     private Double duration30Min;
-
-    @Getter
-    @Setter
-    @Column(name = "duration_1_hour")
     private Double duration1Hour;
-
-    @Getter
-    @Setter
-    @Column(name = "duration_3_hours")
     private Double duration3Hours;
 
-    @Getter
-    @Setter
-    @OneToMany(mappedBy = "device_id", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Product> products;
+//    @Getter
+//    @Setter
+//    @OneToMany(mappedBy = "device_id", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+//    private List<Product> products;
+//
+//    @Getter
+//    @Setter
+//    @OneToMany(mappedBy = "device_id", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+//    private List<Hookah> hookahs;
 
-    @Getter
-    @Setter
-    @OneToMany(mappedBy = "device_id", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Hookah> hookahs;
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Double getDuration30Min() {
+        return duration30Min;
+    }
+
+    public void setDuration30Min(Double duration30Min) {
+        this.duration30Min = duration30Min;
+    }
+
+    public Double getDuration1Hour() {
+        return duration1Hour;
+    }
+
+    public void setDuration1Hour(Double duration1Hour) {
+        this.duration1Hour = duration1Hour;
+    }
+
+    public Double getDuration3Hours() {
+        return duration3Hours;
+    }
+
+    public void setDuration3Hours(Double duration3Hours) {
+        this.duration3Hours = duration3Hours;
+    }
 
     @Override
     public String toString() {
@@ -52,6 +72,8 @@ public class Device {
                 ", duration30Min=" + duration30Min +
                 ", duration1Hour=" + duration1Hour +
                 ", duration3Hours=" + duration3Hours +
+//                ", Hookah= " + hookahs +
+//                ", Products= " + products.toString() +
                 // Avoid directly printing products and hookahs here if lazy-loaded
                 '}';
     }

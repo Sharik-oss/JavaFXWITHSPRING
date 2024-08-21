@@ -25,11 +25,11 @@ public class Hookah {
     @Setter
     @ManyToOne
     @JoinColumn(name = "device_id", nullable = false)
-    private Device device;
+    private Long device;
 
     // Constructors, getters, and setters
 
-    public Hookah(String flavor, Double price, Device device) {
+    public Hookah(String flavor, Double price, Long device) {
         this.flavor = flavor;
         this.price = price;
         this.device = device;

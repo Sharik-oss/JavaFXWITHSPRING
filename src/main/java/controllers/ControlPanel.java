@@ -292,16 +292,7 @@ public class ControlPanel  {
         newDevice.setDuration30Min(min30);
         newDevice.setDuration1Hour(hour1);
         newDevice.setDuration3Hours(hour3);
-        List<Hookah> hookahs = new ArrayList<>();
-        hookahs.add(new Hookah("test", 20.0, newDevice));
-        newDevice.setHookahs(hookahs);
-
-        List<Product> products = new ArrayList<>();
-        products.add(new Product("test", 20.0, newDevice));
-        newDevice.setProducts(products);
         deviceServices.addDevice(newDevice);
-        System.out.println(name + " " + min30 + " " + hour1 + " " + hour3);
-        System.out.println("New Device " + newDevice);
         System.out.println(deviceServices.findAllDevice());
     }
 }

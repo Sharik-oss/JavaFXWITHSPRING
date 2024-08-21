@@ -27,9 +27,9 @@ public class Product {
     @Setter
     @ManyToOne
     @JoinColumn(name = "playstation_id", nullable = false)
-    private Device device;
+    private Long device;
 
-    public Product(String name, Double price, Device device) {
+    public Product(String name, Double price, Long device) {
         this.name = name;
         this.price = price;
         this.device = device;
