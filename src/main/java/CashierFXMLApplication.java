@@ -1,6 +1,8 @@
 import controllers.ControlPanel;
+import controllers.HookahController;
 import javafx.application.Application;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -18,10 +20,15 @@ public class CashierFXMLApplication extends Application {
     @Setter
     private static ConfigurableApplicationContext springContext;
 
+    @Autowired
+    private static ControlPanel controlPanel;
+
+
+
 
     @Override
     public void start(Stage primaryStage) {
-        ControlPanel controlPanel = new ControlPanel();
+        controlPanel = new ControlPanel();
         VBox mainVBox = new VBox();
         Scene mainScene = new Scene(mainVBox);
         // Initialize Spring context if needed

@@ -29,15 +29,13 @@ import java.util.function.Function;
 @RequiredArgsConstructor
 public class ControlPanel {
 
-
-    private DeviceRepository deviceRepository;
-
-    public DeviceServices deviceServices;
+    @Autowired
+    private DeviceServices deviceServices;
     private final Stage stage = new Stage();
-    public ControlPanel(DeviceRepository deviceRepository){
-        this.deviceRepository = deviceRepository;
-    }
 
+    public ControlPanel(DeviceServices deviceServices){
+        this.deviceServices = deviceServices;
+    }
 
 
 
@@ -85,12 +83,6 @@ public class ControlPanel {
         duration3Hours.setFont(Font.font(fontSize));
         TextField duration3 = new TextField();
 
-        Button hookahButton = new Button("Add hookah");
-//        hookahButton.setOnAction(ActionEvent -> hookahController.openHookahPanel(device.getId()));
-//        hookahButton.setFont(Font.font(fontSize));
-//        hookahButton.setMinWidth(200);
-//        hookahButton.setMinHeight(50);
-
         Button addButton = new Button("Add");
         addButton.setFont(Font.font(fontSize));
         addButton.setMinWidth(200);
@@ -108,8 +100,7 @@ public class ControlPanel {
         gridPane.add(duration3Hours, 0, 3);
         gridPane.add(duration3, 1, 3);
 
-        gridPane.add(hookahButton, 0, 4);
-        gridPane.add(addButton, 0, 6);
+        gridPane.add(addButton, 0, 4);
 
         addButton.setOnAction(ActionEvent -> getProperties(name.getText(), Double.parseDouble(duration30.getText()), Double.parseDouble(duration1.getText()), Double.parseDouble(duration3.getText())));
 
@@ -117,7 +108,6 @@ public class ControlPanel {
     }
 
     private void getProperties(String name, Double min30, Double hour1, Double hour3) {
-        deviceServices = new DeviceServices(deviceRepository);
         Device newDevice = new Device(name, min30, hour1, hour3);
         deviceServices.addDevice(newDevice);
         System.out.println(newDevice);
