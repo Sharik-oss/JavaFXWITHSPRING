@@ -7,7 +7,7 @@ import jakarta.persistence.*;
 public class Device {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
     private String name;
@@ -49,6 +49,13 @@ public class Device {
     }
 
     public void setDuration3Hours(Double duration3Hours) {
+        this.duration3Hours = duration3Hours;
+    }
+
+    public Device(String name, Double duration30Min, Double duration1Hour, Double duration3Hours) {
+        this.name = name;
+        this.duration30Min = duration30Min;
+        this.duration1Hour = duration1Hour;
         this.duration3Hours = duration3Hours;
     }
 

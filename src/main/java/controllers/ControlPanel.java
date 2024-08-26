@@ -11,6 +11,7 @@ import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import lombok.RequiredArgsConstructor;
 import model.Device;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -28,169 +29,16 @@ import java.util.function.Function;
 @RequiredArgsConstructor
 public class ControlPanel {
 
-    private final DeviceRepository deviceRepository = new DeviceRepository() {
-        @Override
-        public void deleteDeviceById(Long id) {
 
-        }
+    private DeviceRepository deviceRepository;
 
-        @Override
-        public boolean existsById(Long id) {
-            return false;
-        }
-
-        @Override
-        public Device findDeviceById(Long id) {
-            return null;
-        }
-
-        @Override
-        public void flush() {
-
-        }
-
-        @Override
-        public <S extends Device> S saveAndFlush(S entity) {
-            return null;
-        }
-
-        @Override
-        public <S extends Device> List<S> saveAllAndFlush(Iterable<S> entities) {
-            return null;
-        }
-
-        @Override
-        public void deleteAllInBatch(Iterable<Device> entities) {
-
-        }
-
-        @Override
-        public void deleteAllByIdInBatch(Iterable<Long> longs) {
-
-        }
-
-        @Override
-        public void deleteAllInBatch() {
-
-        }
-
-        @Override
-        public Device getOne(Long aLong) {
-            return null;
-        }
-
-        @Override
-        public Device getById(Long aLong) {
-            return null;
-        }
-
-        @Override
-        public Device getReferenceById(Long aLong) {
-            return null;
-        }
-
-        @Override
-        public <S extends Device> List<S> findAll(Example<S> example) {
-            return null;
-        }
-
-        @Override
-        public <S extends Device> List<S> findAll(Example<S> example, Sort sort) {
-            return null;
-        }
-
-        @Override
-        public <S extends Device> List<S> saveAll(Iterable<S> entities) {
-            return null;
-        }
-
-        @Override
-        public List<Device> findAll() {
-            return null;
-        }
-
-        @Override
-        public List<Device> findAllById(Iterable<Long> longs) {
-            return null;
-        }
-
-        @Override
-        public <S extends Device> S save(S entity) {
-            return null;
-        }
-
-        @Override
-        public Optional<Device> findById(Long aLong) {
-            return Optional.empty();
-        }
-
-        @Override
-        public long count() {
-            return 0;
-        }
-
-        @Override
-        public void deleteById(Long aLong) {
-
-        }
-
-        @Override
-        public void delete(Device entity) {
-
-        }
-
-        @Override
-        public void deleteAllById(Iterable<? extends Long> longs) {
-
-        }
-
-        @Override
-        public void deleteAll(Iterable<? extends Device> entities) {
-
-        }
-
-        @Override
-        public void deleteAll() {
-
-        }
-
-        @Override
-        public List<Device> findAll(Sort sort) {
-            return null;
-        }
-
-        @Override
-        public Page<Device> findAll(Pageable pageable) {
-            return null;
-        }
-
-        @Override
-        public <S extends Device> Optional<S> findOne(Example<S> example) {
-            return Optional.empty();
-        }
-
-        @Override
-        public <S extends Device> Page<S> findAll(Example<S> example, Pageable pageable) {
-            return null;
-        }
-
-        @Override
-        public <S extends Device> long count(Example<S> example) {
-            return 0;
-        }
-
-        @Override
-        public <S extends Device> boolean exists(Example<S> example) {
-            return false;
-        }
-
-        @Override
-        public <S extends Device, R> R findBy(Example<S> example, Function<FluentQuery.FetchableFluentQuery<S>, R> queryFunction) {
-            return null;
-        }
-    };
-    private final DeviceServices deviceServices = new DeviceServices(deviceRepository);
+    public DeviceServices deviceServices;
     private final Stage stage = new Stage();
+    public ControlPanel(DeviceRepository deviceRepository){
+        this.deviceRepository = deviceRepository;
+    }
+
+
 
 
     public void openControlPanel() {
@@ -198,17 +46,13 @@ public class ControlPanel {
         vBox.setAlignment(Pos.CENTER);
         Scene scene = new Scene(vBox);
 
-        // Check if the table is empty
-        boolean isEmpty = !deviceRepository.existsById(1L); // Check if a device with ID 1 exists
 
-        if (isEmpty) {
-            Button startButton = new Button("Add new device");
-            startButton.setAlignment(Pos.CENTER);
-            vBox.getChildren().add(startButton);
-            startButton.setOnAction(ActionEvent -> addDevice());
-        } else {
-            System.out.println("Device table has records.");
-        }
+
+        Button startButton = new Button("Add new device");
+        startButton.setAlignment(Pos.CENTER);
+        vBox.getChildren().add(startButton);
+        startButton.setOnAction(ActionEvent -> addDevice());
+
 
         stage.setWidth(800);
         stage.setHeight(500);
@@ -273,12 +117,8 @@ public class ControlPanel {
     }
 
     private void getProperties(String name, Double min30, Double hour1, Double hour3) {
-        Device newDevice = new Device();
-        newDevice.getId();
-        newDevice.setName(name);
-        newDevice.setDuration30Min(min30);
-        newDevice.setDuration1Hour(hour1);
-        newDevice.setDuration3Hours(hour3);
+        deviceServices = new DeviceServices(deviceRepository);
+        Device newDevice = new Device(name, min30, hour1, hour3);
         deviceServices.addDevice(newDevice);
         System.out.println(newDevice);
     }

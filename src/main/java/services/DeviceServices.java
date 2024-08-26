@@ -11,12 +11,16 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor
 public class DeviceServices {
 
     private final DeviceRepository deviceRepository;
     @PersistenceContext
     private EntityManager entityManager;
+
+    public DeviceServices (DeviceRepository deviceRepository){
+        this.deviceRepository = deviceRepository;
+
+    }
 
     @Transactional
     public Device addDevice(Device device) {
