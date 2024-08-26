@@ -1,29 +1,38 @@
 package services;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import lombok.RequiredArgsConstructor;
 import model.Device;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import repo.DeviceRepository;
 
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class DeviceServices {
 
     private final DeviceRepository deviceRepository;
-    @Autowired
-    public DeviceServices(DeviceRepository deviceRepository){
-        this.deviceRepository = deviceRepository;
-    }
+    @PersistenceContext
+    private EntityManager entityManager;
 
     @Transactional
-    public void addDevice(Device device) {
-            deviceRepository.save(device);
+    public Device addDevice(Device device) {
+        try {
+            Device savedDevice = deviceRepository.save(device);
+            return savedDevice;
+
+        } catch (Exception e) {
+            System.err.println("Error saving device: " + e.getMessage());
+            e.printStackTrace();
+            return null;
+        }
     }
 
-    public List<Device> findAllDevice() {
+
+    public List<Device> findAllDevices() {
         return deviceRepository.findAll();
     }
 
@@ -37,6 +46,6 @@ public class DeviceServices {
 
     @Transactional
     public void deleteDevice(Long id) {
-        deviceRepository.deleteDeviceById(id);
+        deviceRepository.deleteById(id);
     }
 }

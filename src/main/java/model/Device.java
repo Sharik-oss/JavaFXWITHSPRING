@@ -1,32 +1,19 @@
 package model;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
-
-import java.util.List;
 
 @Entity
 @Table(name = "device")
 public class Device {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String name;
     private Double duration30Min;
     private Double duration1Hour;
     private Double duration3Hours;
-
-//    @Getter
-//    @Setter
-//    @OneToMany(mappedBy = "device_id", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-//    private List<Product> products;
-//
-//    @Getter
-//    @Setter
-//    @OneToMany(mappedBy = "device_id", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-//    private List<Hookah> hookahs;
 
 
     public Long getId() {
@@ -68,13 +55,11 @@ public class Device {
     @Override
     public String toString() {
         return "Device{" +
-                "name='" + name + '\'' +
+                "id=" + id +
+                ", name='" + name + '\'' +
                 ", duration30Min=" + duration30Min +
                 ", duration1Hour=" + duration1Hour +
                 ", duration3Hours=" + duration3Hours +
-//                ", Hookah= " + hookahs +
-//                ", Products= " + products.toString() +
-                // Avoid directly printing products and hookahs here if lazy-loaded
                 '}';
     }
 }

@@ -1,6 +1,5 @@
 package controllers;
 
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -12,10 +11,6 @@ import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import lombok.RequiredArgsConstructor;
 import model.Device;
-import model.Hookah;
-import model.Product;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -23,21 +18,16 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.query.FluentQuery;
 import org.springframework.stereotype.Controller;
 import repo.DeviceRepository;
-import repo.HookahRepository;
-import repo.ProductRepository;
 import services.DeviceServices;
-import services.HookahServices;
-import services.ProductServices;
 
-import java.awt.event.ActionEvent;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 
 @Controller
 @RequiredArgsConstructor
-public class ControlPanel  {
+public class ControlPanel {
+
     private final DeviceRepository deviceRepository = new DeviceRepository() {
         @Override
         public void deleteDeviceById(Long id) {
@@ -199,16 +189,14 @@ public class ControlPanel  {
             return null;
         }
     };
-
+    private final DeviceServices deviceServices = new DeviceServices(deviceRepository);
     private final Stage stage = new Stage();
-    private final Device device = new Device();
+
 
     public void openControlPanel() {
         VBox vBox = new VBox();
-
         vBox.setAlignment(Pos.CENTER);
         Scene scene = new Scene(vBox);
-
 
         // Check if the table is empty
         boolean isEmpty = !deviceRepository.existsById(1L); // Check if a device with ID 1 exists
@@ -254,10 +242,10 @@ public class ControlPanel  {
         TextField duration3 = new TextField();
 
         Button hookahButton = new Button("Add hookah");
-        hookahButton.setOnAction(ActionEvent -> hookahController.openHookahPanel(device.getId()));
-        hookahButton.setFont(Font.font(fontSize));
-        hookahButton.setMinWidth(200);
-        hookahButton.setMinHeight(50);
+//        hookahButton.setOnAction(ActionEvent -> hookahController.openHookahPanel(device.getId()));
+//        hookahButton.setFont(Font.font(fontSize));
+//        hookahButton.setMinWidth(200);
+//        hookahButton.setMinHeight(50);
 
         Button addButton = new Button("Add");
         addButton.setFont(Font.font(fontSize));
@@ -285,15 +273,13 @@ public class ControlPanel  {
     }
 
     private void getProperties(String name, Double min30, Double hour1, Double hour3) {
-        DeviceServices deviceServices = new DeviceServices(deviceRepository);
         Device newDevice = new Device();
-
+        newDevice.getId();
         newDevice.setName(name);
         newDevice.setDuration30Min(min30);
         newDevice.setDuration1Hour(hour1);
         newDevice.setDuration3Hours(hour3);
         deviceServices.addDevice(newDevice);
-        System.out.println(deviceServices.findAllDevice());
+        System.out.println(newDevice);
     }
 }
-
